@@ -1,0 +1,14 @@
+{
+    "initialInvestment" : 10000,
+    "interest" : 4,
+    "inflation" : 5,
+    "yearlySalaryIncrease" : 15,
+    "propertyAppreciation" : 5,
+    "rentIncrease" : 5,
+    "durationYears" : 10,
+    "currentRent" : 500,
+    "maintenanceFees" : 300,
+    "salary" : 1600,
+    "propertyValue" : 80000,
+    "monthlyCosts" : 600
+}
