@@ -29,6 +29,12 @@ salaries loanData = concatMap (replicate 12) yearlySalaries
           incrementalRaises = scanl (*) 1 flatRaises
           yearlySalaries = map (* salary loanData) incrementalRaises
 
+propertyValues :: LoanData -> [Float]
+propertyValues loanData = exponentialIncreases (propertyValue loanData) (monthlyPropertyAppreciation loanData) (durationMonths loanData)
+
+monthlyPropertyAppreciation :: LoanData -> Float
+monthlyPropertyAppreciation loanData = monthlyAdjustedPercentage $ propertyAppreciation loanData
+
 -- The cashflow in case of buying a house
 --cashflow :: Float -> Float -> Float -> Float -> Int -> [Float]
 --cashflow baseSalary yearlyRaisePctg amount interest years = zipWith (-) s i
@@ -37,7 +43,10 @@ salaries loanData = concatMap (replicate 12) yearlySalaries
 
 -- The equivalent of the monthly inflation based on the yearly inflation
 monthlyInflation :: LoanData -> Float
-monthlyInflation loanData = ((1 + inflation loanData / 100) ** (1 / 12) - 1) * 100
+monthlyInflation loanData = monthlyAdjustedPercentage $ inflation loanData
+
+monthlyAdjustedPercentage :: Float -> Float
+monthlyAdjustedPercentage x = ((1 + x / 100) ** (1 / 12) - 1) * 100
 
 loanAmount :: LoanData -> Float
 loanAmount loanData = propertyValue loanData - initialInvestment loanData

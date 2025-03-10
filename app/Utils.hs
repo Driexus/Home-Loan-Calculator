@@ -36,7 +36,7 @@ firstRowSpace = 4 + elementSpacing
 
 -- TODO: Put in config file
 elementSpacing :: Int
-elementSpacing = 7
+elementSpacing = 6
 
 emptyElementSpacing :: String
 emptyElementSpacing = replicate elementSpacing ' '
