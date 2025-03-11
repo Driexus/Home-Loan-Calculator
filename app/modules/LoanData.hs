@@ -1,4 +1,5 @@
-module LoanData where
+{-# LANGUAGE DeriveDataTypeable #-}
+module Modules.LoanData where
 
 import Data.Data
 
@@ -18,28 +19,8 @@ data LoanData = LoanData {
     monthlyCosts :: Float
 } deriving (Show, Data)
 
--- Formula: https://www.calculatorsoup.com/calculators/financial/loan-calculator.php
-installments :: LoanData -> [Float]
-installments loanData = replicate (durationYears loanData * 12) (installment loanData)
-
--- An array of the montly salaries taking into account an one time yearly raise
-salaries :: LoanData -> [Float]
-salaries loanData = concatMap (replicate 12) yearlySalaries
-    where flatRaises = replicate (durationYears loanData - 1) (1 + yearlySalaryIncrease loanData / 100)
-          incrementalRaises = scanl (*) 1 flatRaises
-          yearlySalaries = map (* salary loanData) incrementalRaises
-
-propertyValues :: LoanData -> [Float]
-propertyValues loanData = exponentialIncreases (propertyValue loanData) (monthlyPropertyAppreciation loanData) (durationMonths loanData)
-
 monthlyPropertyAppreciation :: LoanData -> Float
 monthlyPropertyAppreciation loanData = monthlyAdjustedPercentage $ propertyAppreciation loanData
-
--- The cashflow in case of buying a house
---cashflow :: Float -> Float -> Float -> Float -> Int -> [Float]
---cashflow baseSalary yearlyRaisePctg amount interest years = zipWith (-) s i
-  --  where s = salaries baseSalary yearlyRaisePctg years
-    --      i = installments amount interest years
 
 -- The equivalent of the monthly inflation based on the yearly inflation
 monthlyInflation :: LoanData -> Float
@@ -57,10 +38,6 @@ installment loanData = (loanAmount loanData * monthlyInterest) / (1 - (1/(1 + mo
 
 durationMonths :: LoanData -> Int
 durationMonths loanData = 12 * durationYears loanData
-
--- An array of montly costs, adjusted montly on a yearly inflation
-monthlyAdjustedCosts :: LoanData -> [Float]
-monthlyAdjustedCosts loanData = exponentialIncreases (monthlyCosts loanData) (monthlyInflation loanData) (durationMonths loanData)
 
 exponentialIncreases :: Float -> Float -> Int -> [Float]
 exponentialIncreases base flatRaisePctg duration = map (* base) exponentialRaises

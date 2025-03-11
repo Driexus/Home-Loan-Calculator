@@ -1,11 +1,12 @@
-import LoanData
-import Utils
+import Modules.Projections
+import Modules.LoanData
+import Modules.Utils
 import Text.JSON.Generic
 
 main = do 
     loanData <- loadData
-    let s = salaries loanData
-    printList s 12
+    let c = cashFlow [salaries] [monthlyAdjustedCosts, installments]
+    printData c
 
 printData :: Show a => (LoanData -> [a]) -> IO()
 printData func = do 
