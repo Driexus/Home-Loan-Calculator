@@ -9,20 +9,22 @@ data LoanData = LoanData {
     inflation :: Float,
     yearlySalaryIncrease :: Float,
     propertyAppreciation :: Float,
+    currentRent :: Float,
     rentIncrease :: Float,
     -- Loan Duration in Years
     durationYears :: Int,
-    currentRent :: Float,
     maintenanceFees :: Float,
     salary :: Float,
     propertyValue :: Float,
-    monthlyCosts :: Float
+    baseCoL :: Float,
+    basePropertyCosts :: Float
 } deriving (Show, Data)
 
+-- The equivalent the yearly property appreciation but in a monthly basis
 monthlyPropertyAppreciation :: LoanData -> Float
 monthlyPropertyAppreciation loanData = monthlyAdjustedPercentage $ propertyAppreciation loanData
 
--- The equivalent of the monthly inflation based on the yearly inflation
+-- The equivalent the yearly inflation but in a monthly basis
 monthlyInflation :: LoanData -> Float
 monthlyInflation loanData = monthlyAdjustedPercentage $ inflation loanData
 
@@ -40,6 +42,10 @@ durationMonths :: LoanData -> Int
 durationMonths loanData = 12 * durationYears loanData
 
 exponentialIncreases :: Float -> Float -> Int -> [Float]
-exponentialIncreases base flatRaisePctg duration = map (* base) exponentialRaises
-    where   flatRaises = replicate (duration - 1) (1 + flatRaisePctg / 100) 
+exponentialIncreases base baseRaisePctg duration = map (* base) exponentialRaises
+    where   flatRaises = replicate (duration - 1) (1 + baseRaisePctg / 100) 
             exponentialRaises = scanl (*) 1 flatRaises
+
+yearlyRaises :: Float -> Float -> Int -> Int -> [Float]
+yearlyRaises base baseRaisePctg duration yearInterval = concatMap (replicate (12 * yearInterval)) raises
+    where raises = exponentialIncreases base baseRaisePctg (duration `div` yearInterval)

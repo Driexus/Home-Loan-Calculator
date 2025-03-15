@@ -14,14 +14,15 @@ cashFlow incomes expenses = combine (-) incomeTotal expensesTotal
 
 -- Monthly salaries taking into account an one time yearly raise
 salaries :: Projection
-salaries loanData = concatMap (replicate 12) yearlySalaries
-    where flatRaises = replicate (durationYears loanData - 1) (1 + yearlySalaryIncrease loanData / 100)
-          incrementalRaises = scanl (*) 1 flatRaises
-          yearlySalaries = map (* salary loanData) incrementalRaises
+salaries loanData = yearlyRaises (salary loanData) (yearlySalaryIncrease loanData) (durationYears loanData) 1
 
 -- Costs, adjusted montly on a yearly inflation
-monthlyAdjustedCosts :: Projection
-monthlyAdjustedCosts loanData = exponentialIncreases (monthlyCosts loanData) (monthlyInflation loanData) (durationMonths loanData)
+monthlyCol :: Projection
+monthlyCol loanData = exponentialIncreases (baseCoL loanData) (monthlyInflation loanData) (durationMonths loanData)
+
+-- Property costs
+propertyCosts :: Projection
+propertyCosts loanData = exponentialIncreases (basePropertyCosts loanData) (monthlyInflation loanData) (durationMonths loanData)
 
 propertyValues :: Projection
 propertyValues loanData = exponentialIncreases (propertyValue loanData) (monthlyPropertyAppreciation loanData) (durationMonths loanData)
@@ -29,3 +30,24 @@ propertyValues loanData = exponentialIncreases (propertyValue loanData) (monthly
 -- Formula: https://www.calculatorsoup.com/calculators/financial/loan-calculator.php
 installments :: Projection
 installments loanData = replicate (durationYears loanData * 12) (installment loanData)
+
+rents :: Projection
+rents loanData = yearlyRaises (currentRent loanData) (rentIncrease loanData) (durationYears loanData) 2
+
+
+-- Totals and Cashflows
+
+totalRentingCosts :: Projection
+totalRentingCosts = cashFlow [monthlyCol, rents] []
+
+totalBuyingCosts :: Projection
+totalBuyingCosts = cashFlow [monthlyCol, installments, propertyCosts] []
+
+opportunityCosts :: Projection
+opportunityCosts = cashFlow [totalBuyingCosts] [totalRentingCosts]
+
+cashFlowRenting :: Projection
+cashFlowRenting = cashFlow [salaries] [totalRentingCosts]
+
+cashFlowBuying :: Projection
+cashFlowBuying = cashFlow [salaries] [totalBuyingCosts]

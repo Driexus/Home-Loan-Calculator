@@ -4,11 +4,12 @@
     "inflation" : 5,
     "yearlySalaryIncrease" : 12,
     "propertyAppreciation" : 5,
-    "rentIncrease" : 5,
+    "rentIncrease" : 4,
     "durationYears" : 10,
     "currentRent" : 500,
     "maintenanceFees" : 300,
     "salary" : 1600,
     "propertyValue" : 120000,
-    "monthlyCosts" : 600
+    "baseCoL" : 600,
+    "basePropertyCosts": 300
 }

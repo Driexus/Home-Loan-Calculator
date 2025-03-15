@@ -5,11 +5,11 @@ import Text.JSON.Generic
 
 main = do 
     loanData <- loadData
-    let c = cashFlow [salaries] [monthlyAdjustedCosts, installments]
-    printData c
+    let c = cashFlow [salaries] [monthlyCol, installments]
+    project c
 
-printData :: Show a => (LoanData -> [a]) -> IO()
-printData func = do 
+project :: Show a => (LoanData -> [a]) -> IO()
+project func = do 
     loanData <- loadData
     printList (func loanData) 12 
 
