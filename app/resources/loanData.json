@@ -1,5 +1,6 @@
 {
     "initialInvestment" : 20000,
+    "yearlyRoI": 12,
     "interest" : 4,
     "inflation" : 5,
     "yearlySalaryIncrease" : 12,

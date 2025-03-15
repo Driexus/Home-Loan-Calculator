@@ -4,7 +4,6 @@ import Modules.Utils
 import Text.JSON.Generic
 
 main = do 
-    loanData <- loadData
     let c = cashFlow [salaries] [monthlyCol, installments]
     project c
 
@@ -17,3 +16,4 @@ loadData :: IO LoanData
 loadData = do 
     json <- readFile "resources/loanData.json"
     return $ decodeJSON json
+    
