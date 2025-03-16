@@ -59,9 +59,6 @@ monthlyCompoundFrom :: Float -> Float -> Int -> Int -> [Float]
 monthlyCompoundFrom base baseRaisePctg start duration = replicate start 0 ++ compounds
     where   compounds = monthlyCompoundRaises base baseRaisePctg (duration - start)
 
-todo :: (Int, Float) -> Float -> Int -> [Float]
-todo (start, base) baseRaisePctg = monthlyCompoundFrom base baseRaisePctg start
-
 compoundArray :: [Float] -> Float -> [Float]
 compoundArray values baseRaisePctg = foldl (zipWith (+)) (repeat 0) compounds
     where   duration = length values

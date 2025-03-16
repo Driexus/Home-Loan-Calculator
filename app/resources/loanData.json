@@ -1,16 +1,16 @@
 {
     "initialInvestment" : 20000,
-    "yearlyRoI": 12,
+    "yearlyRoI": 9,
     "interest" : 4,
     "inflation" : 5,
-    "yearlySalaryIncrease" : 12,
-    "propertyAppreciation" : 5,
+    "yearlySalaryIncrease" : 9,
+    "propertyAppreciation" : 4.5,
     "rentIncrease" : 4,
     "durationYears" : 10,
     "currentRent" : 500,
     "maintenanceFees" : 300,
-    "salary" : 1600,
-    "propertyValue" : 120000,
+    "salary" : 1900,
+    "propertyValue" : 150000,
     "baseCoL" : 600,
     "basePropertyCosts": 300
 }
