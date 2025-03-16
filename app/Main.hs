@@ -25,6 +25,12 @@ main = run =<< execParser opts
 
 run :: Options -> IO ()
 run (Options "salaries" p) = printProjection salaries p
+run (Options "costsRent" p) = printProjection totalRentingCosts p
+run (Options "costsBuy" p) = printProjection totalBuyingCosts p
+run (Options "flowRent" p) = printProjection cashFlowRenting p
+run (Options "flowBuy" p) = printProjection cashFlowBuying p
+run (Options "investFlowRent" p) = printProjection (invest cashFlowRenting) p
+run (Options "investFlowBuy" p) = printProjection (invest cashFlowBuying) p
 run (Options t _) = print $ "Option '" ++ t ++ "' could not be found. Run -h for help."
 
 printProjection :: Projection -> Bool -> IO()

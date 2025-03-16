@@ -1,5 +1,5 @@
 {
-    "initialInvestment" : 20000,
+    "initialInvestment" : 15000,
     "yearlyRoI": 9,
     "interest" : 4,
     "inflation" : 5,
@@ -9,7 +9,7 @@
     "durationYears" : 10,
     "currentRent" : 500,
     "maintenanceFees" : 300,
-    "salary" : 1900,
+    "salary" : 1000,
     "propertyValue" : 150000,
     "baseCoL" : 600,
     "basePropertyCosts": 300

@@ -3,7 +3,7 @@ module Modules.Utils where
 printList :: Show a => [a] -> Int -> IO ()
 printList [] _ = return ()
 printList list elementsPerLine = do
-    putStrLn $ showElementsRecursive (orderedPrefix "C" elementsPerLine) elementSize (replicate firstRowSpace ' ' ++ "|" ++ emptyElementSpacing)
+    putStrLn $ showElementsRecursive (orderedPrefix "Month " elementsPerLine) elementSize (replicate firstRowSpace ' ' ++ "|")
     printListRecursive splitted 1 elementSize
     where splitted = chunksOf list elementsPerLine
           elementSize = maximum $ map (length . show) list
@@ -12,17 +12,20 @@ printListRecursive :: Show a => [[a]] -> Int -> Int -> IO ()
 printListRecursive [] _ _ = return ()
 printListRecursive (x:xs) current elementSize = do
     putStrLn $ verticalLine elementSize (length x)
-    putStrLn (showConstant ('R' : show current) firstRowSpace ++ showElementsRecursive x elementSize ("|" ++ emptyElementSpacing))
+    putStrLn (showConstant firstRowSpace ("Year " ++  show current) ++ showElementsRecursive (map show x) elementSize "|")
     printListRecursive xs (current + 1) elementSize
 
-showElementsRecursive :: Show a => [a] -> Int -> String -> String
+showElementsRecursive :: [String] -> Int -> String -> String
 showElementsRecursive [] _ current = current
-showElementsRecursive (x:xs) maxSize current = current ++ showElementsRecursive xs maxSize (showConstant x (maxSize + elementSpacing) ++ "|" ++ emptyElementSpacing)
+showElementsRecursive (x:xs) maxSize current = current ++ showElementsRecursive xs maxSize (showConstantCentered (maxSize + elementSpacing) x ++ "|")
 
-showConstant :: Show a => a -> Int -> String
-showConstant a size = showA ++ extraChars
-    where   showA = show a
-            extraChars = concat $ replicate (size - length showA) " "
+showConstant :: Int -> String -> String
+showConstant size a = a ++ extraChars
+    where extraChars = concat $ replicate (size - length a) " "
+
+showConstantCentered :: Int -> String -> String
+showConstantCentered size a = replicate (extraChars `div` 2) ' ' ++ a ++ replicate ((extraChars + 1) `div` 2) ' '
+    where extraChars = size - length a
 
 verticalLine :: Int -> Int -> String
 verticalLine size elements = replicate (firstRowSpace + 1 + (cellSize size) * elements) '-'
@@ -36,13 +39,13 @@ firstRowSpace = 4 + elementSpacing
 
 -- TODO: Put in config file
 elementSpacing :: Int
-elementSpacing = 6
+elementSpacing = 4
 
 emptyElementSpacing :: String
 emptyElementSpacing = replicate elementSpacing ' '
 
 cellSize :: Int -> Int
-cellSize elementSize = elementSize + elementSpacing * 2 + 1
+cellSize elementSize = elementSize + elementSpacing + 1
 
 chunksOf :: [a] -> Int -> [[a]]
 chunksOf list elements = chunksOfRecursive list elements []
