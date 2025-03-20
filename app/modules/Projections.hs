@@ -61,3 +61,15 @@ cashFlowBuying = cashFlow [salaries] [totalBuyingCosts]
 invest :: Projection -> Projection
 invest projection loanData = compoundArray result (monthlyRoI loanData)
     where result = projection loanData
+
+
+-- Convert string to projection
+projectionFromName :: String -> Maybe Projection
+projectionFromName "salaries" = Just salaries
+projectionFromName "costsRent" = Just totalRentingCosts
+projectionFromName "costsBuy" = Just totalBuyingCosts
+projectionFromName "flowRent" = Just cashFlowRenting
+projectionFromName "flowBuy" = Just cashFlowBuying
+projectionFromName "investFlowRent" = Just $ invest cashFlowRenting
+projectionFromName "investFlowBuy" = Just $ invest cashFlowBuying
+projectionFromName _ = Nothing

@@ -24,14 +24,11 @@ main = run =<< execParser opts
      <> header "A simple program to calculate future monetary values")
 
 run :: Options -> IO ()
-run (Options "salaries" p) = printProjection salaries p
-run (Options "costsRent" p) = printProjection totalRentingCosts p
-run (Options "costsBuy" p) = printProjection totalBuyingCosts p
-run (Options "flowRent" p) = printProjection cashFlowRenting p
-run (Options "flowBuy" p) = printProjection cashFlowBuying p
-run (Options "investFlowRent" p) = printProjection (invest cashFlowRenting) p
-run (Options "investFlowBuy" p) = printProjection (invest cashFlowBuying) p
-run (Options t _) = print $ "Option '" ++ t ++ "' could not be found. Run -h for help."
+run (Options name p) = do
+  let maybeProjection = projectionFromName name
+  case maybeProjection of
+    Just projection -> printProjection projection p
+    Nothing -> print $ "Option '" ++ name ++ "' could not be found. Run -h for help."
 
 printProjection :: Projection -> Bool -> IO()
 printProjection proj True = project proj
