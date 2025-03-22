@@ -8,12 +8,10 @@ import Data.Aeson (ToJSON)
 import Modules.LoanData
 import Modules.Projections
 
-main = scotty 3000 $ do
-    get "/:word" $ do
-        beam <- pathParam "word"
-        html $ mconcat ["<h1>Scotty, ", beam, " me up!</h1>"]
-
-    get "/projection/:projectionName" $ do
+main :: IO ()
+main = scotty 3010 $ do
+    post "/projection/:projectionName" $ do
+        setHeader "Access-Control-Allow-Origin" "*"
         name <- pathParam "projectionName"
         let maybeProjection = projectionFromName name
         case maybeProjection of
