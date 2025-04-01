@@ -10,7 +10,7 @@ import Modules.Projections
 
 main :: IO ()
 main = scotty 3010 $ do
-    post "/projection/:projectionName" $ do
+    get "/projection/:projectionName" $ do
         setHeader "Access-Control-Allow-Origin" "*"
         name <- pathParam "projectionName"
         let maybeProjection = projectionFromName name

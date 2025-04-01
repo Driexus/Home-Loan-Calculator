@@ -1,0 +1,6 @@
+services:
+  hlc-backend:
+    image: hlc-server:latest
+    container_name: hlc-backend
+    ports:
+      - "3010:3010"

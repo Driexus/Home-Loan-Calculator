@@ -1,0 +1,2 @@
+cabal run server
+npx next dev
