@@ -12,6 +12,8 @@ main :: IO ()
 main = scotty 3010 $ do
     get "/projection/:projectionName" $ do
         setHeader "Access-Control-Allow-Origin" "*"
+        setHeader "Access-Control-Allow-Methods" "GET, POST, OPTIONS, PUT, DELETE"
+        setHeader "Access-Control-Allow-Headers" "Content-Type, Authorization, X-Requested-With"
         name <- pathParam "projectionName"
         let maybeProjection = projectionFromName name
         case maybeProjection of

@@ -1,2 +1,7 @@
 cabal run server
+cabal repl server
 npx next dev
+
+
+docker build -t hlc-front .
+docker build -t hlc-backend .

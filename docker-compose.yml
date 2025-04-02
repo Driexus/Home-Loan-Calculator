@@ -1,6 +1,20 @@
 services:
   hlc-backend:
-    image: hlc-server:latest
+    image: hlc-backend:latest
     container_name: hlc-backend
     ports:
       - "3010:3010"
+    networks:
+      - hlc
+
+  hlc-front:
+    image: hlc-front:latest
+    container_name: hlc-front
+    ports:
+      - "3000:3000"
+    networks:
+      - hlc
+
+networks:
+  hlc:
+    driver: bridge

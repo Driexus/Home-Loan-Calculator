@@ -17,4 +17,5 @@ COPY . /opt/hlc
 RUN cabal build server
 RUN cabal install server
 
+EXPOSE 3010
 CMD ["server"]
